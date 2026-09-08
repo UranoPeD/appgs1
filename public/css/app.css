@@ -181,39 +181,14 @@ a code { background: none; padding: 0; color: inherit; }
 .badge-expiry { font-size: 0.9rem; padding: 5px 12px; }
 
 .fop {
-  margin: 0 0 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  margin: 0 0 14px;
+  text-align: left;
 }
-.fop-seal {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 148px;
-  max-width: 100%;
-  padding: 8px 10px;
-  background: #111;
-  color: #fff;
-  border-radius: 6px;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  line-height: 1.15;
-}
-.fop-seal small {
+.fop img {
   display: block;
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  opacity: 0.9;
-}
-.fop-icon {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 auto;
-  color: #fff;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
 }
 
 .nutrition-card { padding-top: 16px; }

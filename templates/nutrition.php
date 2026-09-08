@@ -12,26 +12,15 @@ $servings = isset($product) && is_array($product)
     ? NutritionFields::servingsPerPackage($product, $nutrition, $qrWeight, $qrVolume)
     : null;
 $fopCode = NutritionFields::fopCode($nutrition);
-$fopLabels = NutritionFields::fopLabels($fopCode);
+$fopSrc = NutritionFields::fopImage($fopCode);
 $col100 = '100 ' . $unit;
 $colPortion = $portionLabel !== '' ? $portionLabel : 'Porção';
 ?>
 <section class="card nutrition-card">
-  <?php if ($fopLabels !== []): ?>
-    <div class="fop" aria-label="Alertas na frente da embalagem">
-      <?php foreach ($fopLabels as $label): ?>
-        <div class="fop-seal">
-          <svg class="fop-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
-            <path d="M15.4 15.4 L21 21" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-          </svg>
-          <span>
-            <small>Alto em</small>
-            <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?>
-          </span>
-        </div>
-      <?php endforeach; ?>
-    </div>
+  <?php if ($fopSrc !== null): ?>
+    <p class="fop">
+      <img src="<?= htmlspecialchars($fopSrc, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(NutritionFields::fopAlt($fopCode), ENT_QUOTES, 'UTF-8') ?>">
+    </p>
   <?php endif; ?>
   <p class="rdc-title">INFORMAÇÃO NUTRICIONAL</p>
   <p class="rdc-meta">

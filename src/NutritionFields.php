@@ -176,22 +176,28 @@ final class NutritionFields
     }
 
     /**
-     * Selos FOP (RDC 429): um alerta por nutriente.
-     *
-     * @return list<string>
+     * Selo FOP oficial (RDC 429), códigos 1–7.
      */
-    public static function fopLabels(int $code): array
+    public static function fopImage(int $code): ?string
+    {
+        if ($code < 1 || $code > 7) {
+            return null;
+        }
+        return '/img/fop/' . $code . '.png';
+    }
+
+    public static function fopAlt(int $code): string
     {
         $map = [
-            1 => ['Açúcares adicionados'],
-            2 => ['Gordura saturada'],
-            3 => ['Sódio'],
-            4 => ['Açúcares adicionados', 'Gordura saturada'],
-            5 => ['Açúcares adicionados', 'Sódio'],
-            6 => ['Gordura saturada', 'Sódio'],
-            7 => ['Açúcares adicionados', 'Gordura saturada', 'Sódio'],
+            1 => 'Alto em açúcar adicionado',
+            2 => 'Alto em gordura saturada',
+            3 => 'Alto em sódio',
+            4 => 'Alto em açúcar adicionado e gordura saturada',
+            5 => 'Alto em açúcar adicionado e sódio',
+            6 => 'Alto em gordura saturada e sódio',
+            7 => 'Alto em açúcar adicionado, gordura saturada e sódio',
         ];
-        return $map[$code] ?? [];
+        return $map[$code] ?? 'Alerta nutricional';
     }
 
     /**
