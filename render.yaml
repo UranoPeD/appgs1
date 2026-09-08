@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: appgs1
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: APP_NAME
+        value: Smart Label Urano
+      - key: APP_CURRENCY
+        value: BRL
+      - key: APP_LOGO_URL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: APP_ADMIN_TOKEN
+        sync: false
