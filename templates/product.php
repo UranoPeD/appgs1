@@ -3,7 +3,7 @@
 /** @var array|null $product */
 /** @var string|null $dbError */
 /** @var string $appName */
-/** @var string|null $gtin */
+/** @var string|null $gtinDisplay */
 /** @var array $rows */
 /** @var string|null $expiry */
 /** @var bool $registered */
@@ -49,8 +49,8 @@ $hasFicha = $registered && (
   <div>
     <p class="kicker"><?= htmlspecialchars((string) ($registered && !empty($product['brand']) ? $product['brand'] : $appName), ENT_QUOTES, 'UTF-8') ?></p>
     <h1><?= htmlspecialchars($registered ? (string) $product['name'] : 'Item identificado pelo QR Code', ENT_QUOTES, 'UTF-8') ?></h1>
-    <?php if ($gtin): ?>
-      <p class="gtin">GTIN <?= htmlspecialchars($gtin, ENT_QUOTES, 'UTF-8') ?></p>
+    <?php if (!empty($gtinDisplay)): ?>
+      <p class="gtin">GTIN <?= htmlspecialchars($gtinDisplay, ENT_QUOTES, 'UTF-8') ?></p>
     <?php endif; ?>
   </div>
 </section>

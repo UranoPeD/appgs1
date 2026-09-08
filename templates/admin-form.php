@@ -23,9 +23,10 @@ $val = static function (string $key) use ($product): string {
   <form method="post" action="/admin/save" class="form">
     <input type="hidden" name="csrf" value="<?= htmlspecialchars($csrf, ENT_QUOTES, 'UTF-8') ?>">
     <input type="hidden" name="is_new" value="<?= $isNew ? '1' : '0' ?>">
+    <input type="hidden" name="original_gtin" value="<?= htmlspecialchars($isNew ? '' : ($val('original_gtin') !== '' ? $val('original_gtin') : $val('gtin')), ENT_QUOTES, 'UTF-8') ?>">
     <label>
       GTIN
-      <input name="gtin" value="<?= htmlspecialchars($val('gtin'), ENT_QUOTES, 'UTF-8') ?>" <?= $isNew ? '' : 'readonly' ?> required inputmode="numeric">
+      <input name="gtin" value="<?= htmlspecialchars($val('gtin'), ENT_QUOTES, 'UTF-8') ?>" required inputmode="numeric">
     </label>
     <label>
       Nome

@@ -83,6 +83,42 @@ final class ProductRepository
             return false;
         }
 
+        try {
+            $pdo->beginTransaction();
+            $original = isset($data['original_gtin']) ? (string) $data['original_gtin'] : '';
+            $gtin = (string) $data['gtin'];
+            if ($original !== '' && $original !== $gtin) {
+                $conflict = $this->findByGtin($gtin);
+                if ($conflict !== null) {
+                    $pdo->rollBack();
+                    $this->lastError = 'Já existe um produto com este GTIN.';
+                    return false;
+                }
+                $this->insertProduct($pdo, $data);
+                $move = $pdo->prepare('UPDATE nutrition_facts SET gtin = :new_gtin WHERE gtin = :old_gtin');
+                $move->execute(['new_gtin' => $gtin, 'old_gtin' => $original]);
+                $del = $pdo->prepare('DELETE FROM products WHERE gtin = :gtin');
+                $del->execute(['gtin' => $original]);
+            } else {
+                $this->upsertProduct($pdo, $data);
+            }
+            $this->syncNutrition($pdo, $gtin, isset($data['nutrition']) && is_array($data['nutrition']) ? $data['nutrition'] : []);
+            $pdo->commit();
+            return true;
+        } catch (PDOException $e) {
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $this->lastError = $e->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function upsertProduct(PDO $pdo, array $data): void
+    {
         $sql = 'INSERT INTO products (
                     gtin, name, brand, description, image_url, ingredients, allergens,
                     origin, manufacturer, website_url, recycling_notes, extra_json,
@@ -108,41 +144,55 @@ final class ProductRepository
                     package_quantity = EXCLUDED.package_quantity,
                     net_weight_g = EXCLUDED.net_weight_g,
                     updated_at = now()';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($this->productParams($data));
+    }
 
-        try {
-            $pdo->beginTransaction();
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([
-                'gtin' => $data['gtin'],
-                'name' => $data['name'],
-                'brand' => $data['brand'] !== '' ? $data['brand'] : null,
-                'description' => $data['description'] !== '' ? $data['description'] : null,
-                'image_url' => $data['image_url'] !== '' ? $data['image_url'] : null,
-                'ingredients' => $data['ingredients'] !== '' ? $data['ingredients'] : null,
-                'allergens' => $data['allergens'] !== '' ? $data['allergens'] : null,
-                'origin' => $data['origin'] !== '' ? $data['origin'] : null,
-                'manufacturer' => $data['manufacturer'] !== '' ? $data['manufacturer'] : null,
-                'website_url' => $data['website_url'] !== '' ? $data['website_url'] : null,
-                'recycling_notes' => $data['recycling_notes'] !== '' ? $data['recycling_notes'] : null,
-                'extra_json' => $data['extra_json'] !== '' ? $data['extra_json'] : null,
-                'sale_type' => $data['sale_type'] === 'unit' ? 'unit' : 'weight',
-                'package_quantity' => $data['package_quantity'] !== '' && $data['package_quantity'] !== null
-                    ? (int) $data['package_quantity']
-                    : null,
-                'net_weight_g' => $data['net_weight_g'] !== '' && $data['net_weight_g'] !== null
-                    ? $data['net_weight_g']
-                    : null,
-            ]);
-            $this->syncNutrition($pdo, (string) $data['gtin'], isset($data['nutrition']) && is_array($data['nutrition']) ? $data['nutrition'] : []);
-            $pdo->commit();
-            return true;
-        } catch (PDOException $e) {
-            if ($pdo->inTransaction()) {
-                $pdo->rollBack();
-            }
-            $this->lastError = $e->getMessage();
-            return false;
-        }
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function insertProduct(PDO $pdo, array $data): void
+    {
+        $sql = 'INSERT INTO products (
+                    gtin, name, brand, description, image_url, ingredients, allergens,
+                    origin, manufacturer, website_url, recycling_notes, extra_json,
+                    sale_type, package_quantity, net_weight_g, updated_at
+                ) VALUES (
+                    :gtin, :name, :brand, :description, :image_url, :ingredients, :allergens,
+                    :origin, :manufacturer, :website_url, :recycling_notes, CAST(:extra_json AS jsonb),
+                    :sale_type, :package_quantity, :net_weight_g, now()
+                )';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($this->productParams($data));
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @return array<string, mixed>
+     */
+    private function productParams(array $data): array
+    {
+        return [
+            'gtin' => $data['gtin'],
+            'name' => $data['name'],
+            'brand' => $data['brand'] !== '' ? $data['brand'] : null,
+            'description' => $data['description'] !== '' ? $data['description'] : null,
+            'image_url' => $data['image_url'] !== '' ? $data['image_url'] : null,
+            'ingredients' => $data['ingredients'] !== '' ? $data['ingredients'] : null,
+            'allergens' => $data['allergens'] !== '' ? $data['allergens'] : null,
+            'origin' => $data['origin'] !== '' ? $data['origin'] : null,
+            'manufacturer' => $data['manufacturer'] !== '' ? $data['manufacturer'] : null,
+            'website_url' => $data['website_url'] !== '' ? $data['website_url'] : null,
+            'recycling_notes' => $data['recycling_notes'] !== '' ? $data['recycling_notes'] : null,
+            'extra_json' => $data['extra_json'] !== '' ? $data['extra_json'] : null,
+            'sale_type' => $data['sale_type'] === 'unit' ? 'unit' : 'weight',
+            'package_quantity' => $data['package_quantity'] !== '' && $data['package_quantity'] !== null
+                ? (int) $data['package_quantity']
+                : null,
+            'net_weight_g' => $data['net_weight_g'] !== '' && $data['net_weight_g'] !== null
+                ? $data['net_weight_g']
+                : null,
+        ];
     }
 
     public function delete(string $gtin): bool

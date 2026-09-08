@@ -85,6 +85,16 @@ final class DigitalLinkParser
         return $this->gtin() !== null;
     }
 
+    public static function displayGtin(string $gtin): string
+    {
+        $digits = preg_replace('/\D/', '', $gtin);
+        if (!is_string($digits) || $digits === '') {
+            return $gtin;
+        }
+        $trimmed = ltrim($digits, '0');
+        return $trimmed === '' ? '0' : $trimmed;
+    }
+
     public function gtin(): ?string
     {
         $gtinRaw = $this->aiValue('01');
@@ -215,7 +225,7 @@ final class DigitalLinkParser
             if (!is_string($digits)) {
                 $digits = $raw;
             }
-            return str_pad($digits, 14, '0', STR_PAD_LEFT);
+            return self::displayGtin($digits);
         }
 
         if (strpos($type, 'decimal:') === 0) {

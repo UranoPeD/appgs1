@@ -177,6 +177,7 @@ final class AdminController
             'package_quantity' => '',
             'net_weight_g' => '',
             'nutrition' => NutritionFields::empty(),
+            'original_gtin' => '',
         ];
     }
 
@@ -217,6 +218,13 @@ final class AdminController
             return ['data' => $data, 'error' => 'Informe um GTIN com 8 a 14 dígitos.'];
         }
         $data['gtin'] = str_pad($digits, 14, '0', STR_PAD_LEFT);
+
+        $origDigits = preg_replace('/\D/', '', (string) $data['original_gtin']);
+        if (!is_string($origDigits) || $origDigits === '' || Http::post('is_new') === '1') {
+            $data['original_gtin'] = '';
+        } else {
+            $data['original_gtin'] = str_pad($origDigits, 14, '0', STR_PAD_LEFT);
+        }
 
         if ($data['name'] === '') {
             return ['data' => $data, 'error' => 'Informe o nome do produto.'];

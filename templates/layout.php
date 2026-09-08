@@ -12,10 +12,11 @@ declare(strict_types=1);
  */
 
 $gtin = $link->gtin();
+$gtinDisplay = $gtin !== null ? \App\Gs1\DigitalLinkParser::displayGtin($gtin) : null;
 $rows = $link->displayRows();
 $expiry = $link->expiryStatus();
 $registered = is_array($product);
-$title = $registered ? (string) $product['name'] : ($gtin ? 'GTIN ' . $gtin : 'Digital Link');
+$title = $registered ? (string) $product['name'] : ($gtinDisplay ? 'GTIN ' . $gtinDisplay : 'Digital Link');
 $inner = __DIR__ . '/' . $template . '.php';
 if (!is_file($inner)) {
     $inner = __DIR__ . '/home.php';
@@ -27,7 +28,7 @@ if (!is_file($inner)) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($title . ' · ' . $appName, ENT_QUOTES, 'UTF-8') ?></title>
-  <link rel="stylesheet" href="/css/app.css?v=10">
+  <link rel="stylesheet" href="/css/app.css?v=11">
 </head>
 <body>
   <header class="top">
