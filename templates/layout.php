@@ -27,7 +27,7 @@ if (!is_file($inner)) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($title . ' · ' . $appName, ENT_QUOTES, 'UTF-8') ?></title>
-  <link rel="stylesheet" href="/css/app.css?v=9">
+  <link rel="stylesheet" href="/css/app.css?v=10">
 </head>
 <body>
   <header class="top">
