@@ -209,7 +209,7 @@ a code { background: none; padding: 0; color: inherit; }
 }
 .rdc-table th { font-weight: 700; text-align: center; }
 .rdc-table td:first-child { text-align: left; }
-.rdc-table td:not(:first-child) { text-align: right; white-space: nowrap; }
+.rdc-table td:not(:first-child) { text-align: center; white-space: nowrap; }
 .rdc-foot { margin: 8px 0 0; font-size: 0.72rem; color: var(--text); }
 
 @media (min-width: 640px) {
