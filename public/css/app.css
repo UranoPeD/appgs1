@@ -230,8 +230,8 @@ a code { background: none; padding: 0; color: inherit; }
   max-width: 273px;
 }
 .fop-full img {
-  width: 78%;
-  max-width: 328px;
+  width: 100%;
+  max-width: 426px;
 }
 
 .nutrition-card { padding-top: 16px; }
