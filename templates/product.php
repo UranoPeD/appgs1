@@ -10,14 +10,11 @@
 
 $highlightAis = ['10' => true, '21' => true, '17' => true, '15' => true, '11' => true];
 $highlight = [];
-$rest = [];
 foreach ($rows as $row) {
     $type = (string) ($row['type'] ?? '');
     $isMeasure = strpos($type, 'decimal:') === 0 || strpos($type, 'amount') === 0;
     if (isset($highlightAis[$row['ai']]) || $isMeasure) {
         $highlight[] = $row;
-    } else {
-        $rest[] = $row;
     }
 }
 
@@ -69,19 +66,6 @@ $hasFicha = $registered && (
   </dl>
 </section>
 <?php endif; ?>
-
-<section class="card">
-  <h2>Dados deste item</h2>
-  <p class="muted">Identificadores do Digital Link.</p>
-  <dl class="facts">
-    <?php foreach ($rest as $row): ?>
-      <div>
-        <dt><?= htmlspecialchars($row['label'], ENT_QUOTES, 'UTF-8') ?> <span class="ai">(<?= htmlspecialchars($row['ai'], ENT_QUOTES, 'UTF-8') ?>)</span></dt>
-        <dd><?= htmlspecialchars($row['display'], ENT_QUOTES, 'UTF-8') ?></dd>
-      </div>
-    <?php endforeach; ?>
-  </dl>
-</section>
 
 <section class="card">
   <h2>Informações do produto</h2>
