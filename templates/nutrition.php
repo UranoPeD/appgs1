@@ -13,12 +13,18 @@ $servings = isset($product) && is_array($product)
     : null;
 $fopCode = NutritionFields::fopCode($nutrition);
 $fopSrc = NutritionFields::fopImage($fopCode);
+$fopSize = '';
+if ($fopCode >= 4 && $fopCode <= 6) {
+    $fopSize = ' fop-wide';
+} elseif ($fopCode === 7) {
+    $fopSize = ' fop-full';
+}
 $col100 = '100 ' . $unit;
 $colPortion = $portionLabel !== '' ? $portionLabel : 'Porção';
 ?>
 <section class="card nutrition-card">
   <?php if ($fopSrc !== null): ?>
-    <p class="fop">
+    <p class="fop<?= htmlspecialchars($fopSize, ENT_QUOTES, 'UTF-8') ?>">
       <img src="<?= htmlspecialchars($fopSrc, ENT_QUOTES, 'UTF-8') ?>" alt="<?= htmlspecialchars(NutritionFields::fopAlt($fopCode), ENT_QUOTES, 'UTF-8') ?>">
     </p>
   <?php endif; ?>
