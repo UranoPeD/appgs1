@@ -55,7 +55,7 @@ $colPortion = $portionLabel !== '' ? $portionLabel : 'Porção';
         $per100Display = $per100 === null ? '–' : NutritionFields::formatNumber($per100, 1);
         $vdDisplay = NutritionFields::VDR[$key] === null
             ? ''
-            : ($vd === null ? '–' : $vd . '%');
+            : ($vd === null ? '–' : (string) $vd);
         ?>
         <tr>
           <td><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></td>
