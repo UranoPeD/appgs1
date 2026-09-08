@@ -186,8 +186,8 @@ a code { background: none; padding: 0; color: inherit; }
 }
 .fop img {
   display: block;
-  width: 100%;
-  max-width: 420px;
+  width: 50%;
+  max-width: 210px;
   height: auto;
 }
 
