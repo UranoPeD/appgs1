@@ -27,7 +27,7 @@ if (!is_file($inner)) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= htmlspecialchars($title . ' · ' . $appName, ENT_QUOTES, 'UTF-8') ?></title>
-  <link rel="stylesheet" href="/css/app.css?v=7">
+  <link rel="stylesheet" href="/css/app.css?v=8">
 </head>
 <body>
   <header class="top">
@@ -41,6 +41,14 @@ if (!is_file($inner)) {
   </main>
   <footer class="foot">
     <p><?= htmlspecialchars($appName, ENT_QUOTES, 'UTF-8') ?> · GS1 Digital Link</p>
+    <nav class="foot-links" aria-label="Urano nas redes">
+      <a href="https://www.facebook.com/uranobalancas" rel="noopener noreferrer" target="_blank">Facebook</a>
+      <a href="https://www.instagram.com/uranobalancas/" rel="noopener noreferrer" target="_blank">Instagram</a>
+      <a href="https://www.linkedin.com/company/uranobalancas/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
+      <a href="https://twitter.com/uranobalancas" rel="noopener noreferrer" target="_blank">X</a>
+      <a href="https://www.youtube.com/user/Uranotecnologia" rel="noopener noreferrer" target="_blank">YouTube</a>
+      <a href="https://www.urano.com.br/" rel="noopener noreferrer" target="_blank">urano.com.br</a>
+    </nav>
   </footer>
 </body>
 </html>

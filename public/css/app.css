@@ -51,6 +51,17 @@ html, body {
   color: var(--muted);
   font-size: 0.78rem;
 }
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-top: 8px;
+}
+.foot-links a {
+  color: var(--muted);
+  text-decoration: none;
+}
+.foot-links a:hover { color: var(--text); }
 
 .page-wide { max-width: 720px; }
 
