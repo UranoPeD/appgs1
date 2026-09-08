@@ -54,7 +54,8 @@ html, body {
 .foot-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 14px;
+  align-items: center;
+  gap: 10px 16px;
   margin-top: 8px;
 }
 .foot-links a {
@@ -62,6 +63,18 @@ html, body {
   text-decoration: none;
 }
 .foot-links a:hover { color: var(--text); }
+.foot-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+.foot-icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
 
 .page-wide { max-width: 720px; }
 
