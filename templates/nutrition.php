@@ -67,22 +67,11 @@ $colPortion = $portionLabel !== '' ? $portionLabel : 'Porção';
         $vdDisplay = NutritionFields::VDR[$key] === null
             ? ''
             : ($vd === null ? '–' : $vd . '%');
-
-        if ($key === 'energy_kcal' && $portion !== null && $portion !== '') {
-            $kjPortion = NutritionFields::energyKj($portion);
-            $kj100 = $per100 === null ? null : NutritionFields::energyKj($per100);
-            $portionDisplay = NutritionFields::formatNumber($portion, 0) . ' kcal'
-                . ($kjPortion === null ? '' : '<br>' . NutritionFields::formatNumber($kjPortion, 0) . ' kJ');
-            $per100Display = $per100 === null
-                ? '–'
-                : NutritionFields::formatNumber($per100, 0) . ' kcal'
-                    . ($kj100 === null ? '' : '<br>' . NutritionFields::formatNumber($kj100, 0) . ' kJ');
-        }
         ?>
         <tr>
           <td><?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?></td>
-          <td><?= $key === 'energy_kcal' ? $per100Display : htmlspecialchars($per100Display, ENT_QUOTES, 'UTF-8') ?></td>
-          <td><?= $key === 'energy_kcal' ? $portionDisplay : htmlspecialchars($portionDisplay, ENT_QUOTES, 'UTF-8') ?></td>
+          <td><?= htmlspecialchars($per100Display, ENT_QUOTES, 'UTF-8') ?></td>
+          <td><?= htmlspecialchars($portionDisplay, ENT_QUOTES, 'UTF-8') ?></td>
           <td><?= htmlspecialchars($vdDisplay, ENT_QUOTES, 'UTF-8') ?></td>
         </tr>
       <?php endforeach; ?>

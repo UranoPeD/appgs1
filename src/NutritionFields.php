@@ -11,7 +11,7 @@ final class NutritionFields
 
     /** @var array<string, string> */
     public const NUMBERS = [
-        'energy_kcal' => 'Valor energético',
+        'energy_kcal' => 'Valor energético (kcal)',
         'carbohydrates_g' => 'Carboidratos (g)',
         'sugars_g' => 'Açúcares totais (g)',
         'added_sugars_g' => 'Açúcares adicionados (g)',
